@@ -1,0 +1,379 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"del",
+				"del_valid_data_index"
+			],
+			[
+				"words",
+				"worddicts_r"
+			],
+			[
+				"data",
+				"data"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git add current file",
+				"Git: Add Current File"
+			],
+			[
+				"git add ",
+				"Git: Add Current File"
+			],
+			[
+				"git custom",
+				"Git: Custom Command"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"git ",
+				"Git: Status"
+			],
+			[
+				"git pull",
+				"Git: Pull"
+			],
+			[
+				"git custom co",
+				"Git: Custom Command"
+			],
+			[
+				"python",
+				"Set Syntax: Python"
+			],
+			[
+				"git config",
+				"Set Syntax: Git Config"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"git custom command",
+				"Git: Custom Command"
+			],
+			[
+				"git change ",
+				"Git: Change Branch"
+			],
+			[
+				"delete ",
+				"Git: Delete Branch"
+			],
+			[
+				"git",
+				"Git: Delete Branch"
+			],
+			[
+				"package controal install",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Bookmarks: Select Previous"
+			],
+			[
+				"Git: init",
+				"Git: Amend Commit"
+			],
+			[
+				"git custom ",
+				"Git: Custom Command"
+			],
+			[
+				"git: init",
+				"Git: Init"
+			],
+			[
+				"pakage control: install pakage",
+				"Package Control: Install Package"
+			],
+			[
+				"sftp",
+				"SFTP: Browse Server…"
+			],
+			[
+				"packagei s",
+				"Package Control: Install Package"
+			],
+			[
+				"package install",
+				"Package Control: Install Package"
+			],
+			[
+				"sync ",
+				"SFTP: Sync Remote -> Local…"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 112.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/choihwanil/Desktop/GAN_research"
+	],
+	"file_history":
+	[
+		"/Users/choihwanil/Library/Application Support/Sublime Text 3/Packages/User/Git.sublime-settings",
+		"/Users/choihwanil/Desktop/GAN_research/GAN_research/README.md",
+		"/Users/choihwanil/Library/Application Support/Sublime Text 3/Packages/Git/Git.sublime-settings",
+		"/Users/choihwanil/Desktop/GAN_research/sftp-config.json",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/makeup.py",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/optimizer.py",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/model.py",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/train.py",
+		"/Users/choihwanil/Desktop/segmentation/sftp-config.json",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/loss.py",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/res/test_res/116_1.png",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/makeup/116_1.png",
+		"/Users/choihwanil/Desktop/segmentation/face-parsing.PyTorch/prepropess_data.py",
+		"/Users/choihwanil/Desktop/nlp_squad/preprocessed_data.py",
+		"/Users/choihwanil/Desktop/nlp_squad/main.py",
+		"/Applications/Utilities/Adobe Creative Cloud/ACC/resources/legacy/host/legacy/css/preferences.css",
+		"/Users/choihwanil/Desktop/nlp_squad/attention_layer.py",
+		"/Users/choihwanil/Desktop/nlp_squad/lstm_attn_lstm.py",
+		"/Users/choihwanil/Desktop/nlp_squad/lstm_with_attention.py",
+		"/Users/choihwanil/Desktop/nlp_squad/lstm_bidirec.py",
+		"/Users/choihwanil/Desktop/nlp_squad/basic_lstm.py",
+		"/Users/choihwanil/Desktop/nlp_squad/train.py",
+		"/Users/choihwanil/Desktop/nlp_squad/validation.py",
+		"/Users/choihwanil/Desktop/nlp_squad/make_batch.py",
+		"/Users/choihwanil/Desktop/nlp_squad/misc.py",
+		"/Users/choihwanil/Desktop/nlp_squad/preprocess.py",
+		"/Users/choihwanil/Desktop/abc.cpp",
+		"/Users/choihwanil/Desktop/nlp_squad/lstm_with_attention",
+		"/Users/choihwanil/Desktop/KAIST_server/a-PyTorch-Tutorial-to-Image-Captioning/hmer/off_image_train/off_image_train.rar",
+		"/Users/choihwanil/Desktop/KAIST_server/a-PyTorch-Tutorial-to-Image-Captioning/models.py",
+		"/Users/choihwanil/Desktop/KAIST_server/a-PyTorch-Tutorial-to-Image-Captioning/create_input_files.py",
+		"/Users/choihwanil/Desktop/KAIST_server/a-PyTorch-Tutorial-to-Image-Captioning/eval.py",
+		"/Users/choihwanil/Desktop/KAIST_server/a-PyTorch-Tutorial-to-Image-Captioning/caption.py",
+		"/Users/choihwanil/Desktop/KAIST_server/sftp-config.json",
+		"/Users/choihwanil/Downloads/ai504_12_BERT.ipynb",
+		"/Users/choihwanil/Desktop/ssss/Class/CV/Assignment3/cyclegan.py",
+		"/Users/choihwanil/Desktop/ssss/sftp-config.json"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 49.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SFTP":
+	{
+		"height": 108.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 158.0
+	},
+	"output.sftp":
+	{
+		"height": 108.0
+	},
+	"pinned_build_system": "",
+	"project": "gan_research.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"misc",
+				"misc.py"
+			],
+			[
+				"make",
+				"make_model.py"
+			],
+			[
+				"test",
+				"face-parsing.PyTorch/test.py"
+			],
+			[
+				"model",
+				"face-parsing.PyTorch/model.py"
+			],
+			[
+				"los",
+				"face-parsing.PyTorch/loss.py"
+			],
+			[
+				"makeup.py",
+				"face-parsing.PyTorch/makeup.py"
+			],
+			[
+				"model.py",
+				"face-parsing.PyTorch/model.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"segmentation",
+				"~/Desktop/sublime project/segmentation.sublime-project"
+			],
+			[
+				"tutorial",
+				"~/Desktop/sublime project/tutorial.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 186.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
