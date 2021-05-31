@@ -1,4 +1,3 @@
-##### range_ : 상위 몇개를 사용할 것, pca_num : pca vector 몇개를 사용할 것, indice : 비슷한 것 순서대로 sorting 된 배열, weight : 각 pca 벡터에 줄 가중치
 from tqdm import tqdm
 import numpy as np
 from PIL import Image
@@ -23,7 +22,7 @@ def pca_direction(range_, pca_num, indice, weight=None):
     vectors = vectors/vectors_.std(axis=0)
 
     u, s, vt = np.linalg.svd(vectors, full_matrices = True)
-    #higi
+
     if weight is None:
         weight = 1-s[-pca_num:]/s[-pca_num:].sum()
     
