@@ -44,36 +44,36 @@ def go_direction(ws, layers, direction, use_norm = False):
     return w
 
 def print_image_movement(Gs_style, index, alpha, range_, pca_d, use_norm = False):
+    with torch.no_grad():
+        w = torch.tensor(latent_w[[index]]).unsqueeze(1).repeat(1,18,1).to(device)
+        
+        gs = gridspec.GridSpec(1, 3, wspace = 0.01, hspace = 0.1)
+        plt.figure(figsize = (14, 7))
+        plt.tight_layout()
 
-    w = torch.tensor(latent_w[[index]]).unsqueeze(1).repeat(1,18,1).to(device)
-    
-    gs = gridspec.GridSpec(1, 3, wspace = 0.01, hspace = 0.1)
-    plt.figure(figsize = (14, 7))
-    plt.tight_layout()
+        # original image
+        plt.subplot(gs[0,0])
+        plt.axis('off')
+        sample = Gs_style(torch.tensor(latent_z[[index]]).to(device))
+        plt.title('Before')
+        plt.imshow(minmax(sample['image'][0].detach().cpu().numpy().transpose(1,2,0)))
 
-    # original image
-    plt.subplot(gs[0,0])
-    plt.axis('off')
-    sample = Gs_style(torch.tensor(latent_z[[index]]).to(device))
-    plt.title('Before')
-    plt.imshow(minmax(sample['image'][0].detach().cpu().numpy().transpose(1,2,0)))
+        # changed image
+        plt.subplot(gs[0,1])
+        w_ = go_direction(w, range_, -alpha * pca_d.reshape(1,1,-1), use_norm)
+        changed_image = Gs_style.synthesis(w_)
+        plt.imshow(minmax(changed_image['image'][0].detach().cpu().numpy().transpose(1,2,0)))
+        plt.title('After(-)')
+        plt.axis('off')
 
-    # changed image
-    plt.subplot(gs[0,1])
-    w_ = go_direction(w, range_, -alpha * pca_d.reshape(1,1,-1), use_norm)
-    changed_image = Gs_style.synthesis(w_)
-    plt.imshow(minmax(changed_image['image'][0].detach().cpu().numpy().transpose(1,2,0)))
-    plt.title('After(-)')
-    plt.axis('off')
+        plt.subplot(gs[0,2])
+        w_ = go_direction(w, range_, alpha * pca_d.reshape(1,1,-1), use_norm)
+        changed_image = Gs_style.synthesis(w_)
+        plt.imshow(minmax(changed_image['image'][0].detach().cpu().numpy().transpose(1,2,0)))
+        plt.title('After(+)')
+        plt.axis('off')
 
-    plt.subplot(gs[0,2])
-    w_ = go_direction(w, range_, alpha * pca_d.reshape(1,1,-1), use_norm)
-    changed_image = Gs_style.synthesis(w_)
-    plt.imshow(minmax(changed_image['image'][0].detach().cpu().numpy().transpose(1,2,0)))
-    plt.title('After(+)')
-    plt.axis('off')
-
-    plt.show()
+        plt.show()
 
 
 def adjust_dynamic_range(data, drange_in, drange_out):

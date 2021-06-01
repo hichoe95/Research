@@ -5,6 +5,9 @@ import numpy as np
 import torch.nn.functional as F
 from torchvision.transforms import ToTensor, ToPILImage
 
+from matplotlib import gridspec
+import matplotlib.pyplot as plt
+
 from PIL import Image
 import torchvision.transforms as transforms
 import cv2
@@ -62,4 +65,20 @@ def img_process(img_path):
 	img = torch.unsqueeze(img, 0)
 
 	return img
+
+def print_two_images(image1, image2):
+	gs = gridspec.GridSpec(1, 2, wspace = 0.1, hspace = 0.1)
+
+	plt.figure(figsize = (30, 15))
+	plt.tight_layout()
+
+	plt.subplot(gs[0,0])
+	plt.imshow(minmax(image1[0].detach().cpu().permute(1,2,0)))
+
+	plt.subplot(gs[0,1])
+	plt.imshow(minmax(image2[0].detach().cpu().permute(1,2,0)))
+
+	plt.show()
+
+
 

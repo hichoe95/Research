@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 import torchvision
 import numpy as np
 import copy
@@ -13,7 +14,6 @@ device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 layers = ['layer2', 'layer4', 'layer6', 'layer8', 'layer10', 'layer12', 'layer14', 'layer16']
 
 
-### w 벡터 이동시키는 것 까지 만들기 ! 
 
 def feature_extractor(model, layer, input, synthesis_layer = False):
 	feature_map = []
@@ -23,23 +23,45 @@ def feature_extractor(model, layer, input, synthesis_layer = False):
 		hook.remove()
 
 	hook = eval('model.'+layer+'.register_forward_hook(fn)')
+	with torch.no_grad():
+		try:
+			if synthesis_layer:
+				model.synthesis(input)
+			else:
+				model(input)
+		except:
+			hook.remove()
+			print('You should check the inputs.')
 
-	try:
-		if synthesis_layer:
-			model.synthesis(input)
-		else:
-			model(input)
-	except:
-		hook.remove()
-		print('You should check the inputs.')
-
-	# print(np.array(feature_map).shape)
 
 	return feature_map[0].squeeze()
 
 # only styleGANv2
 def all_features(model, latent):
 	return {layer : feature_extractor(model, 'synthesis.'+layer, latent) for layer in layers}
+
+
+def feature_change(model : nn.Module, layer : str, mask : torch.tensor, index : list, w : np.array):
+
+	def modify_feature(mask, index):
+		def fn(m, i, o):
+			for i in index:
+				o[0][0][i] = o[0][0][i].masked_fill(mask = mask.to(device), value = o[0][0][i].max())
+			hook.remove()
+			return o
+		return fn
+
+	hook = eval('model.' + layer + '.register_forward_hook(modify_feature(mask, index))')
+
+	assert w.shape == (1,512), 'w vector should have dimension of batch_size(1)'
+
+	with torch.no_grad():
+		try:
+			modified_image = model.synthesis(torch.tensor(w).unsqueeze(1).repeat(1,18,1).to(device))['image']
+		except:
+			hook.remove()
+
+	return modified_image
 
 
 
