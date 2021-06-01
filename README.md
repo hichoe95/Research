@@ -1,5 +1,3 @@
 # research
 
-### I'm babog
-
-## hi
+### this is my thesis.
