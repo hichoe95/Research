@@ -14,7 +14,6 @@ import numpy as np
 import itertools
 from types import SimpleNamespace
 
-
 # ICA
 class ICAEstimator():
     def __init__(self, n_components):
