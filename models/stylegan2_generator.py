@@ -853,8 +853,8 @@ class ModulateConvBlock(nn.Module):
             self.noise_strength = nn.Parameter(torch.zeros(()))
 
     def forward(self, x, w, randomize_noise=False):
+        print('x : ', x.size())
         batch = x.shape[0]
-
         weight = self.weight * self.wscale
         weight = weight.permute(2, 3, 1, 0)
 
