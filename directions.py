@@ -10,28 +10,29 @@ import copy
 from estimator import *
 from misc import *
 
+torch.manual_seed(45)
+np.random.seed(45)
+
 device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 
 latent_z, latent_w = latents()
 
 
-def GANSpace_dir(estimator = 'ipca', z_nums = 1e6, components = 80, alpha = 1):
-    z = torch.randn(z_nums, 512).to(device)    
-    w = np.ones((z_nums, 512), dtype = np.float32)
+def GANSpace_dir(model, estimator = 'ipca', z_nums = 1e6, components = 80, alpha = 1):
+    z = torch.randn(int(z_nums), 512).to(device)    
+    w = np.ones((int(z_nums), 512), dtype = np.float32)
 
     with torch.no_grad():
-        for i in range(1e6//10000):
-            w[1*10000 : (i+1) * 10000] = Gs_style.mapping(k[i*10000 : (i+1) * 10000])['w'].detach().cpu().numpy()
+        for i in range(int(z_nums)//10000):
+            w[i*10000 : (i+1) * 10000] = model.mapping(z[i*10000 : (i+1) * 10000])['w'].detach().cpu().numpy()
 
     w_global_mean = w.mean(axis = 0, keepdims = True, dtype = np.float32)
     w -= w_global_mean
 
     transformer = get_estimator(estimator, components, alpha = alpha)
-
     transformer.fit(w)
 
     w_comp, w_stdev, w_var_ratio = transformer.get_components()
-
     w_comp /= np.linalg.norm(w_comp, axis = -1, keepdims = True)
 
     return w_comp, w_stdev
