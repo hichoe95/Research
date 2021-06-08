@@ -29,8 +29,10 @@ def feature_extractor(model, layer, input, synthesis_layer = False):
 				model.synthesis(input)
 			else:
 				model(input)
-		except:
+		except Exception as e:
 			hook.remove()
+			print(e)
+			print(input.shape)
 			print('You should check the inputs.')
 
 

@@ -18,6 +18,12 @@ device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 latent_z, latent_w = latents()
 
 
+def projection(pc1, pc2, latent):
+    x = np.dot(pc1, latent)
+    y = np.dot(pc2, latent)
+
+    return x, y
+
 def GANSpace_dir(model, estimator = 'ipca', z_nums = 1e6, components = 80, alpha = 1):
     z = torch.randn(int(z_nums), 512).to(device)    
     w = np.ones((int(z_nums), 512), dtype = np.float32)
@@ -35,7 +41,7 @@ def GANSpace_dir(model, estimator = 'ipca', z_nums = 1e6, components = 80, alpha
     w_comp, w_stdev, w_var_ratio = transformer.get_components()
     w_comp /= np.linalg.norm(w_comp, axis = -1, keepdims = True)
 
-    return w_comp, w_stdev
+    return w_comp, w_stdev, w_global_mean
 
 
 def pca_direction(range_, pca_num, indice, weight=None):
@@ -56,14 +62,9 @@ def pca_direction(range_, pca_num, indice, weight=None):
 def go_direction(ws, layers, direction, use_norm = False):
     w = copy.deepcopy(ws.detach())
 
-    norm = torch.norm(w[0][0], dim = -1)
-
     w[:,layers] += torch.tensor(direction, dtype = torch.float32).to(device)
     
     norm_ = torch.norm(w[0, layers[0]])
-
-    if use_norm:
-        w[:,layers] = w[:,layers]/norm_ * norm
     
     return w
 
