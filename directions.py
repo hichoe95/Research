@@ -68,7 +68,7 @@ def go_direction(ws, layers, direction, use_norm = False):
     
     return w
 
-def print_image_movement(Gs_style, latent_w, alpha, range_, pca_d, use_norm = False, type = 'ffhq'):
+def print_image_movement(Gs_style, latent_z, latent_w, alpha, range_, pca_d, use_norm = False, type = 'ffhq'):
     with torch.no_grad():
         if type == 'ffhq':
             w = torch.tensor([latent_w]).unsqueeze(1).repeat(1,18,1).to(device)
