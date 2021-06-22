@@ -12,6 +12,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 import cv2
 
+device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 
 def image_resize(image, size = (512,512)):
 	image = torch.tensor(image, dtype = torch.float32)
@@ -40,14 +41,26 @@ def all_IOU(mask, inputs, thres = 0.):
 	return np.array([IOU(mask, torch.tensor(inputs[i]), thres = thres) for i in range(inputs.shape[0])])
 
 
-def latents():
-	l = np.load('../GAN_analy/genforce/latent_z.npy')
-	l2 = np.load('../GAN_analy/genforce/latent_z_2.npy')
-	latent_z = np.concatenate([l, l2], axis = 0)
+def latents(model = None, num = 1000000, type = 'ffhq'):
 
-	w = np.load('../GAN_analy/genforce/latent_w.npy')
-	w2 = np.load('../GAN_analy/genforce/latent_w_2.npy')
-	latent_w = np.concatenate([w,w2.reshape(-1,512)], axis = 0)
+	if type == 'ffhq':
+		l = np.load('../GAN_analy/genforce/latent_z.npy')
+		l2 = np.load('../GAN_analy/genforce/latent_z_2.npy')
+		latent_z = np.concatenate([l, l2], axis = 0)
+
+		w = np.load('../GAN_analy/genforce/latent_w.npy')
+		w2 = np.load('../GAN_analy/genforce/latent_w_2.npy')
+		latent_w = np.concatenate([w,w2.reshape(-1,512)], axis = 0)
+	else:
+		z = torch.randn(num, 512).to(device)
+		w = torch.zeros(num, 512)
+
+		with torch.no_grad():
+			for i in range(num // 10000):
+				w[i * 10000 : (i+1) * 10000] = model.mapping(z[i * 10000 : (i+1) * 10000])['w'].detach().cpu()
+
+		latent_z = z.detach().cpu().numpy()
+		latent_w = w.numpy()
 
 	return latent_z, latent_w
 

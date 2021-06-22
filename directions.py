@@ -15,7 +15,7 @@ np.random.seed(45)
 
 device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 
-latent_z, latent_w = latents()
+# latent_z, latent_w = latents()
 
 
 def projection(pc1, pc2, latent):
@@ -68,12 +68,12 @@ def go_direction(ws, layers, direction, use_norm = False):
     
     return w
 
-def print_image_movement(Gs_style, index, alpha, range_, pca_d, use_norm = False, type = 'ffhq'):
+def print_image_movement(Gs_style, latent_w, alpha, range_, pca_d, use_norm = False, type = 'ffhq'):
     with torch.no_grad():
         if type == 'ffhq':
-            w = torch.tensor(latent_w[[index]]).unsqueeze(1).repeat(1,18,1).to(device)
+            w = torch.tensor([latent_w]).unsqueeze(1).repeat(1,18,1).to(device)
         elif type == 'car':
-            w = torch.tensor(latent_w[[index]]).unsqueeze(1),repeat(1,16,1).to(device)
+            w = torch.tensor([latent_w]).unsqueeze(1).repeat(1,16,1).to(device)
         
         gs = gridspec.GridSpec(1, 3, wspace = 0.01, hspace = 0.1)
         plt.figure(figsize = (14, 7))
@@ -82,7 +82,7 @@ def print_image_movement(Gs_style, index, alpha, range_, pca_d, use_norm = False
         # original image
         plt.subplot(gs[0,0])
         plt.axis('off')
-        sample = Gs_style(torch.tensor(latent_z[[index]]).to(device))
+        sample = Gs_style(torch.tensor([latent_z]).to(device))
         plt.title('Before')
         plt.imshow(minmax(sample['image'][0].detach().cpu().numpy().transpose(1,2,0)))
 
