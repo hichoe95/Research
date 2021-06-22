@@ -29,7 +29,7 @@ def segmentation_model(path = '../gansegmentation/face-parsing.PyTorch/res/cp/79
 def styleGANv2(path = '../GAN_analy/genforce/stylegan2_ffhq1024.pth', resolution = 1024):
 
 	Gs_style = StyleGAN2Generator(resolution = resolution)
-	D_style = StyleGAN2Discriminator(resolution = resolutoin)
+	D_style = StyleGAN2Discriminator(resolution = resolution)
 
 	model = torch.load(path)
 

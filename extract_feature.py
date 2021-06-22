@@ -39,7 +39,7 @@ def feature_extractor(model, layer, input, synthesis_layer = False):
 	return feature_map[0].squeeze()
 
 # only styleGANv2
-def all_features(model, latent):
+def all_features(model, latent, layers = layers):
 	return {layer : feature_extractor(model, 'synthesis.'+layer, latent) for layer in layers}
 
 
