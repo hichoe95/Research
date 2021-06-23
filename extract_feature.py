@@ -17,13 +17,13 @@ layers = ['layer2', 'layer4', 'layer6', 'layer8', 'layer10', 'layer12', 'layer14
 
 def feature_extractor(model, layer, input, synthesis_layer = False):
 	feature_map = []
-
-	def fn(m, i, o):
-		feature_map.append(o[0].detach().cpu().numpy())
-		hook.remove()
-
-	hook = eval('model.'+layer+'.register_forward_hook(fn)')
 	with torch.no_grad():
+
+		def fn(m, i, o):
+			feature_map.append(o[0].detach().cpu().numpy())
+			hook.remove()
+
+		hook = eval('model.'+layer+'.register_forward_hook(fn)')
 		try:
 			if synthesis_layer:
 				model.synthesis(input)
