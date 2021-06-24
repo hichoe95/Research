@@ -32,6 +32,11 @@ def GANSpace_dir(model, estimator = 'ipca', z_nums = 1e6, components = 80, alpha
         for i in range(int(z_nums)//10000):
             w[i*10000 : (i+1) * 10000] = model.mapping(z[i*10000 : (i+1) * 10000])['w'].detach().cpu().numpy()
 
+
+        del model
+        torch.cuda.empty_cache()
+
+
     w_global_mean = w.mean(axis = 0, keepdims = True, dtype = np.float32)
     w -= w_global_mean
 
@@ -79,13 +84,6 @@ def print_image_movement(Gs_style, latent_z, latent_w, alpha, range_, pca_d, use
         plt.figure(figsize = (14, 7))
         plt.tight_layout()
 
-        # original image
-        plt.subplot(gs[0,0])
-        plt.axis('off')
-        sample = Gs_style(torch.tensor([latent_z]).to(device))
-        plt.title('Before')
-        plt.imshow(minmax(sample['image'][0].detach().cpu().numpy().transpose(1,2,0)))
-
         # changed image
         plt.subplot(gs[0,1])
         w_ = go_direction(w, range_, -alpha * pca_d.reshape(1,1,-1), use_norm)
@@ -93,6 +91,13 @@ def print_image_movement(Gs_style, latent_z, latent_w, alpha, range_, pca_d, use
         plt.imshow(minmax(changed_image['image'][0].detach().cpu().numpy().transpose(1,2,0)))
         plt.title('After(-)')
         plt.axis('off')
+
+        # original image
+        plt.subplot(gs[0,0])
+        plt.axis('off')
+        sample = Gs_style(torch.tensor([latent_z]).to(device))
+        plt.title('Before')
+        plt.imshow(minmax(sample['image'][0].detach().cpu().numpy().transpose(1,2,0)))
 
         plt.subplot(gs[0,2])
         w_ = go_direction(w, range_, alpha * pca_d.reshape(1,1,-1), use_norm)
@@ -156,7 +161,7 @@ class find_data_any():
         
         self.random = random
         self.output_layer = output_layer
-        d
+        
         self.query = query
         self.query_index = query_index
         self.nidx = 0
