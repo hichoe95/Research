@@ -86,7 +86,7 @@ def print_features(features, width = 16):
 			plt.subplot(gs[i,j])
 			plt.axis('off')
 			plt.title(f'{i*width + j}')
-			plt.imshow(features[i * width + j]) 
+			plt.imshow(features[i * width + j], vmin = -5, vmax = 5, cmap = 'RdBu_r') 
 	plt.show()
 
 
