@@ -25,7 +25,7 @@ class boundary():
 		with torch.no_grad():
 
 			xs, xe = self.x_range
-			ys, ye = self.y_range
+			ys, ye = self.y_range 
 
 			x = np.linspace(xs, xe, self.resolution)
 			y = np.linspace(ys, ye, self.resolution)
@@ -86,11 +86,11 @@ class boundary():
 		images_ptb = np.array(images_ptb)
 
 		gs = gridspec.GridSpec(res, res, wspace = 0.05, hspace = 0.02)
-		plt.figure(figsize = (20,20))
+		plt.figure(figsize = (res, res))
 
-		for k in range(20):
-			for l in range(20):
-				plt.subplot(gs[19-k, l%20])
+		for k in range(res):
+			for l in range(res):
+				plt.subplot(gs[res - 1 - k, l%res])
 				plt.axis('off')
 				plt.title('{}'.format(l))
 				plt.imshow(minmax(images_ptb[k][l].transpose(1,2,0)))
