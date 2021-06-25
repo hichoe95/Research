@@ -42,7 +42,7 @@ class boundary():
 
 			features_ptb = []
 
-			for i in range(0, self.resolution):
+			for i in tqdm(range(0, self.resolution)):
 				pca_d = grid_ptb[i * self.resolution : (i+1) * self.resolution]
 				w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), self.arange, pca_d)
 				features_ptb.append(feature_extractor(self.model, self.layer, w, synthesis_layer = True).reshape(self.resolution, -1))
@@ -51,7 +51,7 @@ class boundary():
 
 		return xx, yy, index, features_ptb, f, f.shape
 
-	def print_boundary(xx, yy, features, index, res = 40, topn = 300):
+	def print_boundary(self, xx, yy, features, index, res = 40, topn = 300):
 
 		plt.figure(figsize = (10, 10))
 
@@ -62,16 +62,16 @@ class boundary():
 
 	def print_boundary_images(self, res = 20):
 
-		xs, xe = x_range
-		ys, ye = y_range
+		xs, xe = self.x_range
+		ys, ye = self.y_range
 
-		x = np.linsapce(xs, xe, res)
+		x = np.linspace(xs, xe, res)
 		y = np.linspace(ys, ye, res)
 
 		xx, yy = np.meshgrid(x, y)
 
-		x_ptb = xx.flatten().reshape(-1, 1) * pc1
-		y_ptb = yy.flatten().reshape(-1, 1) * pc2
+		x_ptb = xx.flatten().reshape(-1, 1) * self.pc1
+		y_ptb = yy.flatten().reshape(-1, 1) * self.pc2
 
 		grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 512)
 
@@ -81,9 +81,9 @@ class boundary():
 			for i in tqdm(range(0, res)):
 				pca_d = grid_ptb[i * res : (i+1) * res]
 				w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(res, 18, 1).to(device), self.arange, pca_d)
-				images_ptb.append(Gs_style.synthesis(w)['image'].detach().cpu().numpy())
+				images_ptb.append(self.model.synthesis(w)['image'].detach().cpu().numpy())
 
-		images_ptb = np.aray(images_ptb)
+		images_ptb = np.array(images_ptb)
 
 		gs = gridspec.GridSpec(res, res, wspace = 0.05, hspace = 0.02)
 		plt.figure(figsize = (20,20))
