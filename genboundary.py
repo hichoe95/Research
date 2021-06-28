@@ -42,7 +42,7 @@ class boundary():
 
 			features_ptb = []
 
-			for i in tqdm(range(0, self.resolution)):
+			for i in range(0, self.resolution):
 				pca_d = grid_ptb[i * self.resolution : (i+1) * self.resolution]
 				w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), self.arange, pca_d)
 				features_ptb.append(feature_extractor(self.model, self.layer, w, synthesis_layer = True).reshape(self.resolution, -1))
@@ -98,6 +98,7 @@ class boundary():
 		plt.show()
 
 
+#일단은 인덱스에 해당하는 뉴런들을 표시하고 채널 방향으로 싹 다 더해서 mask로 사용하고 있음.
 
 def boundary_mask(feature, index, mask_shape, out_shape):
     assert len(feature.shape) == 2, 'feature should be flattened!'

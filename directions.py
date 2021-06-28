@@ -69,7 +69,7 @@ def go_direction(ws, layers, direction, use_norm = False):
 
     w[:,layers] += torch.tensor(direction, dtype = torch.float32).to(device)
     
-    norm_ = torch.norm(w[0, layers[0]])
+    # norm_ = torch.norm(w[0, layers[0]])
     
     return w
 
