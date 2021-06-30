@@ -37,7 +37,9 @@ class boundary():
 
 			grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 512)
 
-			f = feature_extractor(self.model, self.layer, torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), synthesis_layer = True).flatten()
+			f = feature_extractor(self.model, self.layer, torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), synthesis_layer = True)
+			f_shape = f.shape
+			f = f.flatten()
 			index = (-f).argsort()
 
 			features_ptb = []
@@ -49,7 +51,7 @@ class boundary():
 
 			features_ptb = np.array(features_ptb).reshape(self.resolution ** 2, -1)
 
-		return xx, yy, index, features_ptb, f, f.shape
+		return xx, yy, index, features_ptb, f, f_shape
 
 	def print_boundary(self, xx, yy, features, index, res = 40, topn = 300):
 
