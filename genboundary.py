@@ -20,7 +20,8 @@ class boundary():
 		self.arange = arange
 		self.resolution = resolution
 
-	def feature_grid(self,):
+
+	def feature_grid(self, w18 = None):
 
 		with torch.no_grad():
 
@@ -32,11 +33,21 @@ class boundary():
 
 			xx, yy = np.meshgrid(x, y)
 
-			x_ptb = xx.flatten().reshape(-1, 1) * self.pc1
-			y_ptb = yy.flatten().reshape(-1, 1) * self.pc2
+			if w18 is not None:
+				new_pc = np.repeat(copy.deepcopy(self.latent_w).reshape(1, 1, 512), 18, axis = 1)
+				new_pc[:, self.arange] = self.pc1
 
-			grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 512)
+				x_ptb = xx.flatten().reshape(-1, 1, 1) * new_pc
+				y_ptb = yy.flatten().reshape(-1, 1, 1) * w18
 
+				grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 18, 512)
+			else:
+				x_ptb = xx.flatten().reshape(-1, 1) * self.pc1
+				y_ptb = yy.flatten().reshape(-1, 1) * self.pc2
+
+				grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 512)
+
+			print(self.latent_w.shape)
 			f = feature_extractor(self.model, self.layer, torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), synthesis_layer = True)
 			f_shape = f.shape
 			f = f.flatten()
@@ -44,16 +55,21 @@ class boundary():
 
 			features_ptb = []
 
+
+
 			for i in range(0, self.resolution):
 				pca_d = grid_ptb[i * self.resolution : (i+1) * self.resolution]
-				w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), self.arange, pca_d)
+				if w18 is not None:
+					w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), np.arange(0,18), pca_d)
+				else:
+					w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), self.arange, pca_d)
 				features_ptb.append(feature_extractor(self.model, self.layer, w, synthesis_layer = True).reshape(self.resolution, -1))
 
 			features_ptb = np.array(features_ptb).reshape(self.resolution ** 2, -1)
 
 		return xx, yy, index, features_ptb, f, f_shape
 
-	def print_boundary(self, xx, yy, features, index, res = 40, topn = 300):
+	def print_boundary(self, xx, yy, features, index, res = 40, topn = 300, figsize = (10,10)):
 
 		plt.figure(figsize = (10, 10))
 
