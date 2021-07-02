@@ -13,7 +13,7 @@ from misc import *
 torch.manual_seed(45)
 np.random.seed(45)
 
-device = 'cuda:7' if torch.cuda.is_available() else 'cpu'
+device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 
 # latent_z, latent_w = latents()
 

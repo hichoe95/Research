@@ -12,7 +12,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 import cv2
 
-device = 'cuda:7' if torch.cuda.is_available() else 'cpu'
+device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 
 def image_resize(image, size = (512,512)):
 	image = torch.tensor(image, dtype = torch.float32)

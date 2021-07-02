@@ -16,6 +16,7 @@ layers = ['layer2', 'layer4', 'layer6', 'layer8', 'layer10', 'layer12', 'layer14
 
 
 def feature_extractor(model, layer, input, synthesis_layer = False):
+
 	feature_map = []
 	with torch.no_grad():
 
@@ -34,7 +35,6 @@ def feature_extractor(model, layer, input, synthesis_layer = False):
 			print(e)
 			print(input.shape)
 			print('You should check the inputs.')
-
 
 	return feature_map[0].squeeze()
 

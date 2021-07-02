@@ -6,7 +6,7 @@ from directions import *
 from extract_feature import feature_extractor
 
 class boundary():
-	def __init__(self, model, layer, x_range, y_range, pc1, pc2, latent_w, arange, resolution = 30):
+	def __init__(self, model, layer, x_range, y_range, pc1, pc2, latent_w, arange, alpha = 1, resolution = 30):
 
 		assert latent_w.shape == (1, 512), 'latent_w.shape == (1,512), but got {}'.format(latent_w.shape)
 
@@ -20,6 +20,7 @@ class boundary():
 		self.arange = arange
 		self.resolution = resolution
 
+		self.alpha = 1
 
 	def feature_grid(self, w18 = None):
 
@@ -34,20 +35,22 @@ class boundary():
 			xx, yy = np.meshgrid(x, y)
 
 			if w18 is not None:
-				new_pc = np.repeat(copy.deepcopy(self.latent_w).reshape(1, 1, 512), 18, axis = 1)
+				new_pc = np.zeros((1, 18, 512))
 				new_pc[:, self.arange] = self.pc1
 
-				x_ptb = xx.flatten().reshape(-1, 1, 1) * new_pc
-				y_ptb = yy.flatten().reshape(-1, 1, 1) * w18
+				origin = np.repeat(np.expand_dims(self.latent_w, axis = 1), 18, axis = 1)
 
-				grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 18, 512)
+				x_ptb = xx.flatten().reshape(-1, 1, 1) * new_pc
+				y_ptb = yy.flatten().reshape(-1, 1, 1) * ((origin - w18)/np.linalg.norm(origin-w18) * self.alpha)
+
+				grid_ptb = (x_ptb + y_ptb).reshape(-1, 18, 512)
+
 			else:
 				x_ptb = xx.flatten().reshape(-1, 1) * self.pc1
 				y_ptb = yy.flatten().reshape(-1, 1) * self.pc2
 
 				grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 512)
 
-			print(self.latent_w.shape)
 			f = feature_extractor(self.model, self.layer, torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), synthesis_layer = True)
 			f_shape = f.shape
 			f = f.flatten()
@@ -60,9 +63,10 @@ class boundary():
 			for i in range(0, self.resolution):
 				pca_d = grid_ptb[i * self.resolution : (i+1) * self.resolution]
 				if w18 is not None:
-					w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), np.arange(0,18), pca_d)
+					w = (torch.tensor(self.latent_w, dtype = torch.float32).unsqueeze(1).repeat(self.resolution, 18, 1) + torch.tensor(pca_d, dtype = torch.float32)).to(device)
 				else:
 					w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), self.arange, pca_d)
+
 				features_ptb.append(feature_extractor(self.model, self.layer, w, synthesis_layer = True).reshape(self.resolution, -1))
 
 			features_ptb = np.array(features_ptb).reshape(self.resolution ** 2, -1)
@@ -78,7 +82,7 @@ class boundary():
 
 		plt.show()
 
-	def print_boundary_images(self, res = 20):
+	def print_boundary_images(self, res = 20, w18 = None):
 
 		xs, xe = self.x_range
 		ys, ye = self.y_range
@@ -88,17 +92,32 @@ class boundary():
 
 		xx, yy = np.meshgrid(x, y)
 
-		x_ptb = xx.flatten().reshape(-1, 1) * self.pc1
-		y_ptb = yy.flatten().reshape(-1, 1) * self.pc2
+		if w18 is not None:
+			new_pc = np.zeros((1, 18, 512))
+			new_pc[:, self.arange] = self.pc1
 
-		grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 512)
+			origin = np.repeat(np.expand_dims(self.latent_w, axis = 1), 18, axis = 1)
+
+			x_ptb = xx.flatten().reshape(-1, 1, 1) * new_pc
+			y_ptb = yy.flatten().reshape(-1, 1, 1) * ((origin - w18)/np.linalg.norm(origin-w18) * self.alpha)
+
+			grid_ptb = (x_ptb + y_ptb).reshape(-1, 18, 512)
+
+		else:
+			x_ptb = xx.flatten().reshape(-1, 1) * self.pc1
+			y_ptb = yy.flatten().reshape(-1, 1) * self.pc2
+
+			grid_ptb = (x_ptb + y_ptb).reshape(-1, 1, 512)
 
 		images_ptb = []
 
 		with torch.no_grad():
 			for i in tqdm(range(0, res)):
 				pca_d = grid_ptb[i * res : (i+1) * res]
-				w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(res, 18, 1).to(device), self.arange, pca_d)
+				if w18 is not None:
+					w = (torch.tensor(self.latent_w, dtype = torch.float32).unsqueeze(1).repeat(res, 18, 1) + torch.tensor(pca_d, dtype = torch.float32)).to(device)
+				else:
+					w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(res, 18, 1).to(device), self.arange, pca_d)
 				images_ptb.append(self.model.synthesis(w)['image'].detach().cpu().numpy())
 
 		images_ptb = np.array(images_ptb)
