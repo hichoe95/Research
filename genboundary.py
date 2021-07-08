@@ -75,7 +75,7 @@ class boundary():
 
 	def print_boundary(self, xx, yy, features, index, res = 40, topn = 300, figsize = (10,10)):
 
-		plt.figure(figsize = (10, 10))
+		plt.figure(figsize = figsize)
 
 		for i in range(0, topn):
 			plt.contour(xx, yy, features[:, index[i]].reshape(res, res), levels = 0, alpha = 0.4)
@@ -134,7 +134,7 @@ class boundary():
 
 		plt.show()
 
-	def sorted_index(cor1, cor2, w18 = None):
+	def sorted_index(self, cor1, cor2, w18 = None):
 
 		x1, y1 = cor1
 		x2, y2 = cor2
@@ -156,13 +156,13 @@ class boundary():
 			w0 = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), range_, x1 * pc1 + y1 * pc2)
 			w1 = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), range_, x2 * pc1 + y2 * pc2)
 
-			feature = feature_extractor(Gs_style, self.layer, torch.cat([w0, w1], dim = 0), synthesis_layer = True)
-			featuer = feature.reshape(2, -1)
+			feature = feature_extractor(self.model, self.layer, torch.cat([w0, w1], dim = 0), synthesis_layer = True)
+			feature = feature.reshape(2, -1)
 
 			index_ = np.where((feature[0]>= 0) != (feature[1]>=0))[0]
-			index_sorted = sorted(list(index_), key = -abs(feature[0][x]) - abs(feature[1][x]))
+			index_sorted = sorted(list(index_), key = lambda x : -abs(feature[0][x]) - abs(feature[1][x]))
 
-		return index_sorted
+		return w0, w1, index_sorted, feature
 
 #일단은 인덱스에 해당하는 뉴런들을 표시하고 채널 방향으로 싹 다 더해서 mask로 사용하고 있음.
 
