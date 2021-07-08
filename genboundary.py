@@ -134,6 +134,35 @@ class boundary():
 
 		plt.show()
 
+	def sorted_index(cor1, cor2, w18 = None):
+
+		x1, y1 = cor1
+		x2, y2 = cor2
+
+		if w18 is not None:
+			range_ = np.arange(0, 18)
+			pc1 = np.zeros((1, 18, 512))
+			pc1[:, self.arange] = self.pc1
+
+			ori = np.repeat(np.expand_dims(self.latent_w, axis = 1), 18, axis = 1)
+			pc2 = ((ori - w18)/np.linalg.norm(ori - w18) * self.alpha)
+
+		else:
+			range_ = self.arange
+			pc1 = self.pc1
+			pc2 = self.pc2
+
+		with torch.no_grad():
+			w0 = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), range_, x1 * pc1 + y1 * pc2)
+			w1 = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(1, 18, 1).to(device), range_, x2 * pc1 + y2 * pc2)
+
+			feature = feature_extractor(Gs_style, self.layer, torch.cat([w0, w1], dim = 0), synthesis_layer = True)
+			featuer = feature.reshape(2, -1)
+
+			index_ = np.where((feature[0]>= 0) != (feature[1]>=0))[0]
+			index_sorted = sorted(list(index_), key = -abs(feature[0][x]) - abs(feature[1][x]))
+
+		return index_sorted
 
 #일단은 인덱스에 해당하는 뉴런들을 표시하고 채널 방향으로 싹 다 더해서 mask로 사용하고 있음.
 
