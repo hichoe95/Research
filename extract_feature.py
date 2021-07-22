@@ -24,7 +24,7 @@ def feature_extractor(model, layer, input, synthesis_layer = False):
 			feature_map.append(o[0].detach().cpu().numpy())
 			hook.remove()
 
-		hook = eval('model.'+layer+'.register_forward_hook(fn)')
+		hook = eval('model.'+layer+'.regㅈister_forward_hook(fn)')
 		try:
 			if synthesis_layer:
 				model.synthesis(input)
