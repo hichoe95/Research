@@ -27,3 +27,39 @@ def sets(features, index, sample_num, range_):
 
 
 	return sets_same, sets_diff
+
+
+def print_channelwise(sets, feature_shape, height, width):
+
+    channels = np.unique(sets) // (feature_shape[1] ** 2)
+
+    zeros = np.zeros(feature_shape[0] * feature_shape[1] * feature_shape[2])
+    zeros[sets] = 1
+    zeros = zeros.reshape(feature_shape)
+
+    gs = gridspec.GridSpec(height, width, wspace = 0.0, hspace = 0.2)
+
+    plt.tight_layout()
+    plt.figure(figsize = (width*2, height*2))
+
+    for i, c in enumerate(channels[:height*width]):
+        plt.subplot(gs[i//width, i%width])
+        plt.axis('off')
+        plt.title('{}'.format(c))
+        plt.imshow(zeros[c], vmin = -1, vmax = 1, cmap = 'RdBu_r')
+    plt.show()
+
+
+def coord(index, size):
+    channel = index // (size * size)
+    
+    n = index % (size * size)
+    
+    x = n // size
+    y = n % size
+    
+    return channel, x, y
+
+
+
+    
