@@ -22,7 +22,7 @@ class boundary():
 
 		self.alpha = 1
 
-	def feature_grid(self, w18 = None):
+	def feature_grid(self, synthesis_layer = True, w18 = None):
 
 		with torch.no_grad():
 
@@ -65,9 +65,14 @@ class boundary():
 				if w18 is not None:
 					w = (torch.tensor(self.latent_w, dtype = torch.float32).unsqueeze(1).repeat(self.resolution, 18, 1) + torch.tensor(pca_d, dtype = torch.float32)).to(device)
 				else:
-					w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), self.arange, pca_d)
+					if synthesis_layer:
+						w = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution, 18, 1).to(device), self.arange, pca_d)
+						features_ptb.append(feature_extractor(self.model, self.layer, w, synthesis_layer = True).reshape(self.resolution, -1))
 
-				features_ptb.append(feature_extractor(self.model, self.layer, w, synthesis_layer = True).reshape(self.resolution, -1))
+					else:
+						z = go_direction(tocrch.tensor(self.latnet_w).to(device), self.arange, pca_d, synthesis_layer = False)
+						features_ptb.append(feature_extractor(self.model, self.layer, z, synthesis_layer = False).reshape(self.resolution, -1))
+
 
 			features_ptb = np.array(features_ptb).reshape(self.resolution ** 2, -1)
 
@@ -76,6 +81,7 @@ class boundary():
 	def print_boundary(self, xx, yy, features, index, res = 40, topn = 300, figsize = (10,10)):
 
 		plt.figure(figsize = figsize)
+
 
 		for i in range(0, topn):
 			plt.contour(xx, yy, features[:, index[i]].reshape(res, res), levels = 0, alpha = 0.4)

@@ -64,12 +64,14 @@ def pca_direction(range_, pca_num, indice, weight=None):
     return vt[-pca_num:].T@weight * vectors_.std(axis=0), s, vectors_
 
 
-def go_direction(ws, layers, direction, use_norm = False):
+def go_direction(ws, layers, direction, synthesis_layer = True, use_norm = False):
     w = copy.deepcopy(ws.detach())
 
-    w[:,layers] += torch.tensor(direction, dtype = torch.float32).to(device)
+    if synthesis_layer:
+        w[:,layers] += torch.tensor(direction, dtype = torch.float32).to(device)
+    else:
+        z[:] += torch.tensor(direction, dtype = torch.float32).to(device)
     
-    # norm_ = torch.norm(w[0, layers[0]])
     
     return w
 
