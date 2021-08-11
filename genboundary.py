@@ -70,8 +70,8 @@ class boundary():
 						features_ptb.append(feature_extractor(self.model, self.layer, w, synthesis_layer = True).reshape(self.resolution, -1))
 
 					else:
-						z = go_direction(tocrch.tensor(self.latnet_w).to(device), self.arange, pca_d, synthesis_layer = False)
-						features_ptb.append(feature_extractor(self.model, self.layer, z, synthesis_layer = False).reshape(self.resolution, -1))
+						z = go_direction(torch.tensor(self.latent_w).unsqueeze(1).repeat(self.resolution,1, 1).to(device), self.arange, pca_d, synthesis_layer = False)
+						features_ptb.append(feature_extractor(self.model, self.layer, z.squeeze(), synthesis_layer = False).reshape(self.resolution, -1))
 
 
 			features_ptb = np.array(features_ptb).reshape(self.resolution ** 2, -1)

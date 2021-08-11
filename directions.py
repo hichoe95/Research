@@ -70,7 +70,7 @@ def go_direction(ws, layers, direction, synthesis_layer = True, use_norm = False
     if synthesis_layer:
         w[:,layers] += torch.tensor(direction, dtype = torch.float32).to(device)
     else:
-        z[:] += torch.tensor(direction, dtype = torch.float32).to(device)
+        w[:] += torch.tensor(direction, dtype = torch.float32).to(device)
     
     
     return w
