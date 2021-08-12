@@ -84,7 +84,7 @@ class boundary():
 
 
 		for i in range(0, topn):
-			plt.contour(xx, yy, features[:, index[i]].reshape(res, res), levels = 0, alpha = 0.4)
+			plt.contour(xx, yy, features[:, index[i]].reshape(res, res), levels = [0 + 1e-7, 0 - 1e-7], alpha = 0.4)
 
 		plt.show()
 
