@@ -61,7 +61,7 @@ def feature_change(model : nn.Module, layer : str, mask : torch.tensor, index : 
 		try:
 			modified_image = model.synthesis(torch.tensor(w).unsqueeze(1).repeat(1,18,1).to(device))['image']
 		except:
-			hook.remove()
+			hook.remove()  
 
 	return modified_image
 
