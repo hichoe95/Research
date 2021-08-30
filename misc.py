@@ -80,7 +80,7 @@ def img_process(img_path):
 
 	return img
 
-def print_two_images(image1, image2):
+def print_two_images(image1, image2, labels):
 	gs = gridspec.GridSpec(1, 2, wspace = 0.1, hspace = 0.1)
 
 	plt.figure(figsize = (10, 5))
@@ -88,9 +88,11 @@ def print_two_images(image1, image2):
 
 	plt.subplot(gs[0,0])
 	plt.imshow(minmax(image1[0].detach().cpu().permute(1,2,0)))
+	plt.title(labels[0])
 
 	plt.subplot(gs[0,1])
 	plt.imshow(minmax(image2[0].detach().cpu().permute(1,2,0)))
+	plt.title(labels[1])
 
 	plt.show()
 

@@ -66,6 +66,56 @@ def feature_change(model : nn.Module, layer : str, mask : torch.tensor, index : 
 	return modified_image
 
 
+def coord(index, size):
+    channel = index // (size * size)
+    
+    n = index % (size * size)
+    
+    x = n // size
+    y = n % size
+    
+    return channel, x, y
+
+
+def plus_minus_activations(features_b):
+
+	p_index = np.where(features_b[0] > 0)
+	m_index = np.where(features_b[0] <= 0)
+
+	for i in tqdm(range(1,features_b.size(0))):
+	    
+	    p_temp = np.where(features_b[i] > 0)
+	    m_temp = np.where(features_b[i] <= 0)
+	    
+	    p_index = np.intersect1d(p_index, p_temp)
+	    m_index = np.intersect1d(m_index, m_temp)
+
+	return p_index, m_index
+
+
+def print_channelwise(sets, feature_shape, height, width):
+
+    channels = np.unique(sets // (feature_shape[1] ** 2))
+
+    zeros = np.zeros(feature_shape[0] * feature_shape[1] * feature_shape[2])
+    zeros[sets] = 1
+    zeros = zeros.reshape(feature_shape)
+
+    gs = gridspec.GridSpec(height, width, wspace = 0.0, hspace = 0.2)
+
+    plt.tight_layout()
+    plt.figure(figsize = (width*2, height*2))
+
+    for i, c in enumerate(channels):
+        _, x, y = coord(sets[i], feature_shape[-1])
+        plt.subplot(gs[i//width, i%width])
+        plt.axis('off')
+        plt.title('{}, ({:d}, {:d})'.format(c, x, y))
+        plt.imshow(zeros[c], vmin = -1, vmax = 1, cmap = 'RdBu_r')
+
+        
+    plt.show()
+
 
 # all feature plot 
 def print_features(features, width = 16):
