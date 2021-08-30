@@ -35,7 +35,7 @@ def GANSpace_dir(model, estimator = 'ipca', z_nums = 1e6, components = 80, alpha
 
         del model
         torch.cuda.empty_cache()
- 
+  
 
     w_global_mean = w.mean(axis = 0, keepdims = True, dtype = np.float32)
     w -= w_global_mean
