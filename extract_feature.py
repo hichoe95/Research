@@ -66,7 +66,7 @@ def feature_change(model : nn.Module, layer : str, mask : torch.tensor, index : 
 	return modified_image
 
 
-def coord(index, size):
+def coord(index, size): 
     channel = index // (size * size)
     
     n = index % (size * size)
