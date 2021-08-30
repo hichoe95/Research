@@ -80,10 +80,10 @@ def img_process(img_path):
 
 	return img
 
-def print_two_images(image1, image2, labels):
+def print_two_images(image1, image2, labels, figsize = (10, 5)):
 	gs = gridspec.GridSpec(1, 2, wspace = 0.1, hspace = 0.1)
 
-	plt.figure(figsize = (10, 5))
+	plt.figure(figsize = figsize)
 	plt.tight_layout()
 
 	plt.subplot(gs[0,0])
