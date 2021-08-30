@@ -47,7 +47,8 @@ def GANSpace_dir(model, estimator = 'ipca', z_nums = 1e6, components = 80, alpha
     w_comp /= np.linalg.norm(w_comp, axis = -1, keepdims = True)
 
     return w_comp, w_stdev, w_global_mean
-
+ 
+ 
 
 def pca_direction(range_, pca_num, indice, weight=None):
     vectors_ = latent_w[indice[:range_]]    
