@@ -6,6 +6,10 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 
 from models.stylegan2_generator import *
 from models.stylegan2_discriminator import *
+from models.stylegan_generator import *
+from models.stylegan_discriminator import *
+from models.pggan_generator import *
+from models.pggan_discriminator import *
 ###  
 
 from model import *
@@ -40,6 +44,37 @@ def styleGANv2(path = '../GAN_analy/genforce/stylegan2_ffhq1024.pth', resolution
 	D_style.eval()
 
 	return Gs_style, D_style
+
+
+def styleGANv1(path = '../GAN_analy/genforce/stylegan_ffhq1024.pth', resolution = 1024):
+
+	Gen = StyleGANGenerator(resolution = resolution)
+	Dis = StyleGANDiscriminator(resolution = resolution)
+
+	model = torch.load(path)
+
+	Gen.load_state_dict(model['generator_smooth'])
+	Dis.load_state_dict(model['discriminator'])
+
+	Gen.eval()
+	Dis.eval()
+
+	return Gen, Dis
+
+def pgGAN(path = '../GAN_analy/genforce/pggan_celebahq1024.pth', resolution = 1024):
+
+	Gen = PGGANGenerator(resolution = resolution)
+	Dis = PGGANDiscriminator(resolution = resolution)
+
+	model = torch.load(path)
+
+	Gen.load_state_dict(model['generator_smooth'])
+	Dis.load_state_dict(model['discriminator'])
+
+	Gen.eval()
+	Dis.eval()
+
+	return Gen, Dis
 
 
 def img_process(img_path):

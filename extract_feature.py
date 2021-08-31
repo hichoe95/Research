@@ -3,6 +3,7 @@ import torch.nn as nn
 import torchvision
 import numpy as np
 import copy
+from tqdm import tqdm
 
 import matplotlib.pyplot as plt
 from matplotlib import gridspec 
@@ -15,13 +16,16 @@ layers = ['layer2', 'layer4', 'layer6', 'layer8', 'layer10', 'layer12', 'layer14
 
 
 
-def feature_extractor(model, layer, input, synthesis_layer = False):
+def feature_extractor(model, layer, input, style_gan = True, synthesis_layer = False):
 
 	feature_map = []
 	with torch.no_grad():
 
 		def fn(m, i, o):
-			feature_map.append(o[0].detach().cpu().numpy())
+			if style_gan:
+				feature_map.append(o[0].detach().cpu().numpy())
+			else:
+				feature_map.append(o.detach().cpu().numpy())
 			hook.remove()
 
 		hook = eval('model.'+layer+'.register_forward_hook(fn)')
@@ -82,7 +86,7 @@ def plus_minus_activations(features_b):
 	p_index = np.where(features_b[0] > 0)
 	m_index = np.where(features_b[0] <= 0)
 
-	for i in tqdm(range(1,features_b.size(0))):
+	for i in tqdm(range(1,features_b.shape[0])):
 	    
 	    p_temp = np.where(features_b[i] > 0)
 	    m_temp = np.where(features_b[i] <= 0)
