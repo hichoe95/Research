@@ -22,6 +22,8 @@ class boundary():
 
 		self.alpha = 1
 
+		#asd;lfkajs;dlkfj
+
 	def feature_grid(self, synthesis_layer = True, w18 = None):
 
 		with torch.no_grad():
