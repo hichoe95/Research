@@ -5,6 +5,7 @@ import numpy as np
 import torch.nn.functional as F
 from torchvision.transforms import ToTensor, ToPILImage
 
+
 from matplotlib import gridspec
 import matplotlib.pyplot as plt
 
@@ -87,10 +88,12 @@ def print_two_images(image1, image2, labels, figsize = (10, 5)):
 	plt.tight_layout()
 
 	plt.subplot(gs[0,0])
+	plt.axis('off')
 	plt.imshow(minmax(image1[0].detach().cpu().permute(1,2,0)))
 	plt.title(labels[0])
 
 	plt.subplot(gs[0,1])
+	plt.axis('off')
 	plt.imshow(minmax(image2[0].detach().cpu().permute(1,2,0)))
 	plt.title(labels[1])
 
