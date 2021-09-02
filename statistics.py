@@ -31,7 +31,7 @@ def sets(features, index, sample_num, range_):
 
 def print_channelwise(sets, feature_shape, height, width):
 
-    channels = np.unique(sets) // (feature_shape[1] ** 2)
+    channels = np.unique(sets) // (feature_shape[1] ** 2)2
 
     zeros = np.zeros(feature_shape[0] * feature_shape[1] * feature_shape[2])
     zeros[sets] = 1
