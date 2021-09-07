@@ -794,7 +794,10 @@ class ConvBlock(nn.Module):
             x = self.const.repeat(w.shape[0], 1, 1, 1)
 
 
-        temp = x.clone() #########
+        # if self.position != 'const_init':
+        #     temp = x.clone() #########
+        # else:
+        temp = None
 
         bias = self.bias * self.bscale if self.bias is not None else None
 
