@@ -11,6 +11,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import copy
 
 from .sync_op import all_gather
 
@@ -488,17 +489,20 @@ class SynthesisModule(nn.Module):
                 block_idx = res_log2 - self.init_res_log2
                 if block_idx == 0:
                     if self.const_input:
-                        x, style = self.layer0(None, wp[:, 0], randomize_noise)
+                        x, style, temp = self.layer0(None, wp[:, 0], randomize_noise) ##########
                     else:
                         x = wp[:, 0].view(-1, self.w_space_dim, 1, 1)
-                        x, style = self.layer0(x, wp[:, 0], randomize_noise)
+                        x, style, temp = self.layer0(x, wp[:, 0], randomize_noise) ##########
                 else:
-                    x, style = self.__getattr__(f'layer{2 * block_idx}')(
+                    x, style, temp = self.__getattr__(f'layer{2 * block_idx}')( ##########
                         x, wp[:, 2 * block_idx])
                 results[f'style{2 * block_idx:02d}'] = style
-                x, style = self.__getattr__(f'layer{2 * block_idx + 1}')(
+                results[f'temp{2 * block_idx:02d}'] = temp ##########
+                x, style, temp = self.__getattr__(f'layer{2 * block_idx + 1}')( ##########
                     x, wp[:, 2 * block_idx + 1])
                 results[f'style{2 * block_idx + 1:02d}'] = style
+                results[f'temp{2 * block_idx + 1:02d}'] = temp ##########
+
             if current_lod - 1 < lod <= current_lod:
                 image = self.__getattr__(f'output{block_idx}')(x, None)
             elif current_lod < lod < current_lod + 1:
@@ -789,6 +793,9 @@ class ConvBlock(nn.Module):
         else:
             x = self.const.repeat(w.shape[0], 1, 1, 1)
 
+
+        temp = x.clone() #########
+
         bias = self.bias * self.bscale if self.bias is not None else None
 
         if self.position == 'last':
@@ -796,13 +803,14 @@ class ConvBlock(nn.Module):
                 x = x + bias.view(1, -1, 1, 1)
             return x
 
+
         x = self.apply_noise(x, randomize_noise)
         if bias is not None:
             x = x + bias.view(1, -1, 1, 1)
         x = self.activate(x)
         x = self.normalize(x)
         x, style = self.style(x, w)
-        return x, style
+        return x, style, temp ##########
 
 
 class DenseBlock(nn.Module):
