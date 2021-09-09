@@ -81,21 +81,6 @@ def coord(index, size):
     return channel, x, y
 
 
-def plus_minus_activations(features_b):
-
-	p_index = np.where(features_b[0] > 0)
-	m_index = np.where(features_b[0] <= 0)
-
-	for i in tqdm(range(1,features_b.shape[0])):
-	    
-	    p_temp = np.where(features_b[i] > 0)
-	    m_temp = np.where(features_b[i] <= 0)
-	    
-	    p_index = np.intersect1d(p_index, p_temp)
-	    m_index = np.intersect1d(m_index, m_temp)
-
-	return p_index, m_index
-
 
 def print_channelwise(sets, feature_shape, height, width):
 
