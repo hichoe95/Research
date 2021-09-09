@@ -107,7 +107,7 @@ def print_channelwise(sets, feature_shape, height, width):
 
 
 # all feature plot 
-def print_features(features, width = 16):
+def print_features(features, width = 16, figsize = (10,10)):
 
 	num_features = features.shape[0]
 
@@ -117,7 +117,7 @@ def print_features(features, width = 16):
 
 	gs = gridspec.GridSpec(height, width, wspace = 0.0, hspace = 0.1)
 
-	plt.figure(figsize = (width, height))
+	plt.figure(figsize = figsize)
 	plt.tight_layout()
 
 	for i in range(height):
