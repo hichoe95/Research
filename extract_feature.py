@@ -19,26 +19,25 @@ layers = ['layer2', 'layer4', 'layer6', 'layer8', 'layer10', 'layer12', 'layer14
 def feature_extractor(model, layer, input, style_gan = True, synthesis_layer = False):
 
 	feature_map = []
-	with torch.no_grad():
 
-		def fn(m, i, o):
-			if style_gan:
-				feature_map.append(o[0].detach().cpu().numpy())
-			else:
-				feature_map.append(o.detach().cpu().numpy())
-			hook.remove()
+	def fn(m, i, o):
+		if style_gan:
+			feature_map.append(o[0].detach().cpu().numpy())
+		else:
+			feature_map.append(o.detach().cpu().numpy())
+		hook.remove()
 
-		hook = eval('model.'+layer+'.register_forward_hook(fn)')
-		try:
-			if synthesis_layer:
-				model.synthesis(input)
-			else:
-				model(input)
-		except Exception as e:
-			hook.remove()
-			print(e)
-			print(input.shape)
-			print('You should check the inputs.')
+	hook = eval('model.'+layer+'.register_forward_hook(fn)')
+	try:
+		if synthesis_layer:
+			model.synthesis(input)
+		else:
+			model(input)
+	except Exception as e:
+		hook.remove()
+		print(e)
+		print(input.shape)
+		print('You should check the inputs.')
 
 	return feature_map[0].squeeze()
 

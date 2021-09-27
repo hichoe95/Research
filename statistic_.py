@@ -3,6 +3,7 @@ import torch.nn as nn
 import torchvision
 import numpy as np
 import copy
+from tqdm import tqdm
 
 import matplotlib.pyplot as plt
 from matplotlib import gridspec 
@@ -14,10 +15,10 @@ def plus_minus_activations(features_b):
     m_index = np.where(features_b[0] <= 0)
 
     for i in tqdm(range(1,features_b.shape[0])):
-        
+
         p_temp = np.where(features_b[i] > 0)
         m_temp = np.where(features_b[i] <= 0)
-        
+
         p_index = np.intersect1d(p_index, p_temp)
         m_index = np.intersect1d(m_index, m_temp)
 
@@ -47,7 +48,7 @@ def sets(features, index, sample_num, range_):
 
 def print_channelwise(sets, feature_shape, height, width):
 
-    channels = np.unique(sets) // (feature_shape[1] ** 2)2
+    channels = np.unique(sets) // (feature_shape[1] ** 2)
 
     zeros = np.zeros(feature_shape[0] * feature_shape[1] * feature_shape[2])
     zeros[sets] = 1
