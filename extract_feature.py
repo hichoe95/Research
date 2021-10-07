@@ -28,6 +28,7 @@ def feature_extractor(model, layer, input, style_gan = True, synthesis_layer = F
 		hook.remove()
 
 	hook = eval('model.'+layer+'.register_forward_hook(fn)')
+
 	try:
 		if synthesis_layer:
 			model.synthesis(input)
