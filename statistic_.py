@@ -9,20 +9,13 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec 
 
 
-def plus_minus_activations(features_b):
+def plus_activations(features):
 
-    p_index = np.where(features_b[0] > 0)
-    m_index = np.where(features_b[0] <= 0)
+    mask = features > 0.
+    mean = np.mean(mask, axis = 0)
+    p_index = np.where(mean == 1.)
 
-    for i in tqdm(range(1,features_b.shape[0])):
-
-        p_temp = np.where(features_b[i] > 0)
-        m_temp = np.where(features_b[i] <= 0)
-
-        p_index = np.intersect1d(p_index, p_temp)
-        m_index = np.intersect1d(m_index, m_temp)
-
-    return p_index, m_index
+    return p_index
 
     
 def sets(features, index, sample_num, range_):
