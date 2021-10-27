@@ -3,3 +3,7 @@ sftp-config.json
 Untitled.ipynb
 
 __pycache__
+
+pytorch-pretrained-BigGAN/
+
+unetgan/
