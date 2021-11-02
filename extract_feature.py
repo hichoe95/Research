@@ -14,6 +14,9 @@ device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 
 layers = ['layer2', 'layer4', 'layer6', 'layer8', 'layer10', 'layer12', 'layer14', 'layer16']
 
+def features_sum():
+		
+	return ret
 
 
 def feature_extractor(model, layer, input, style_gan = True, synthesis_layer = False):
