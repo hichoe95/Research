@@ -2,4 +2,11 @@
 
 ### GAN research.
 
-You can take the pre-trained models(in model dir) weight at https://github.com/genforce/genforce.
+
+## StlyeGAN2, PG-GAN
+
+- https://github.com/genforce/genforce.
+
+## StyleGAN3 (Alias Free GAN)
+
+- https://github.com/NVlabs/stylegan3
