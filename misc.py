@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 from PIL import Image
 import torchvision.transforms as transforms
-import cv2
+# import cv2
 
 device = 'cuda:4' if torch.cuda.is_available() else 'cpu'
 

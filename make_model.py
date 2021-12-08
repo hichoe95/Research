@@ -19,7 +19,7 @@ from transform import *
 import numpy as np
 from PIL import Image
 import torchvision.transforms as transforms
-import cv2
+# import cv2
 
 def segmentation_model(path = '../gansegmentation/face-parsing.PyTorch/res/cp/79999_iter.pth', n_classes = 19):
 
