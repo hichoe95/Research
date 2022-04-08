@@ -1,4 +1,4 @@
-# research
+# research - (will be updated)
 
 ### GAN research.
 
